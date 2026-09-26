@@ -1,0 +1,322 @@
+openapi: 3.0.3
+info:
+  title: Nibble Storefront API
+  version: 1.0.0
+  description: |
+    Legacy storefront catalog bundle for the web app (browse, cart, orders).
+    JSON property names use camelCase to match generated TypeScript from go-data-model.
+servers:
+  - url: http://localhost:8080
+    description: local api-engine
+paths:
+  /v1/storefront:
+    get:
+      operationId: getStorefrontCatalog
+      summary: Load storefront catalog for an account
+      parameters:
+        - name: account_id
+          in: query
+          required: false
+          description: Account to load; defaults to server DEFAULT_ACCOUNT_ID (acct_dev locally).
+          schema:
+            type: string
+            example: acct_dev
+      responses:
+        '200':
+          description: Full catalog snapshot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorefrontCatalog'
+        '404':
+          description: Unknown account or empty catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+  /storefront:
+    get:
+      operationId: getStorefrontCatalogLegacyPath
+      summary: Alias of GET /v1/storefront for the Vite proxy
+      parameters:
+        - name: account_id
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Full catalog snapshot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorefrontCatalog'
+components:
+  schemas:
+    Money:
+      type: object
+      required: [amountCents, currency]
+      properties:
+        amountCents:
+          type: integer
+          format: int64
+        currency:
+          type: string
+          example: CAD
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        address:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+    SavedAddress:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        current:
+          type: boolean
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        brand:
+          type: string
+        last4:
+          type: string
+        expMonth:
+          type: integer
+        expYear:
+          type: integer
+        default:
+          type: boolean
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/SavedAddress'
+        paymentMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+    Provider:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    Cuisine:
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+    Rating:
+      type: object
+      properties:
+        average:
+          type: number
+          format: double
+        count:
+          type: integer
+    Restaurant:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        cuisineIds:
+          type: array
+          items:
+            type: string
+        categoryIds:
+          type: array
+          items:
+            type: string
+        rating:
+          $ref: '#/components/schemas/Rating'
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: string
+        restaurantId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        section:
+          type: string
+    Offer:
+      type: object
+      properties:
+        id:
+          type: string
+        restaurantId:
+          type: string
+        menuItemId:
+          type: string
+        providerId:
+          type: string
+        price:
+          $ref: '#/components/schemas/Money'
+        estimatedMinutes:
+          type: integer
+    CartLine:
+      type: object
+      properties:
+        id:
+          type: string
+        restaurantId:
+          type: string
+        menuItemId:
+          type: string
+        providerId:
+          type: string
+        quantity:
+          type: integer
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+        accountId:
+          type: string
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartLine'
+    OrderLine:
+      type: object
+      properties:
+        id:
+          type: string
+        menuItemId:
+          type: string
+        name:
+          type: string
+        quantity:
+          type: integer
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        accountId:
+          type: string
+        restaurantId:
+          type: string
+        providerId:
+          type: string
+        placedAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [pending, completed, cancelled]
+        total:
+          $ref: '#/components/schemas/Money'
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderLine'
+    StorefrontCatalog:
+      type: object
+      required:
+        - account
+        - providers
+        - categories
+        - cuisines
+        - restaurants
+        - items
+        - offers
+        - cart
+        - orders
+      properties:
+        account:
+          $ref: '#/components/schemas/Account'
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Provider'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        cuisines:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cuisine'
+        restaurants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Restaurant'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+        cart:
+          $ref: '#/components/schemas/Cart'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    ErrorBody:
+      type: object
+      properties:
+        error:
+          type: string
