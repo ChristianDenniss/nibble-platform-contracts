@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Nibble Account API
+  version: 1.0.0
+  description: Saved delivery addresses for the legacy storefront account.
+servers:
+  - url: http://localhost:8080
+    description: local api-engine
+paths:
+  /v1/accounts/{accountId}/addresses/{addressId}:
+    delete:
+      operationId: deleteSavedAddress
+      summary: Remove a saved address
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: addressId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Address removed
+        '404':
+          description: Account or address not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+  /v1/accounts/{accountId}/addresses/{addressId}/current:
+    put:
+      operationId: setCurrentSavedAddress
+      summary: Mark a saved address as the current delivery address
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: addressId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Current address updated
+        '404':
+          description: Account or address not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+components:
+  schemas:
+    ErrorBody:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
