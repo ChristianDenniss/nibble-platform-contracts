@@ -236,6 +236,33 @@ message RecordItemMatchResponse {
   string id = 1;
 }
 
+message Brand {
+  string id = 1;
+  string slug = 2;
+  string name = 3;
+}
+
+message Dish {
+  string id = 1;
+  string brand_id = 2;
+  string name = 3;
+  string description = 4;
+}
+
+message RecordBrandRequest {
+  Brand brand = 1;
+}
+message RecordBrandResponse {
+  string id = 1;
+}
+
+message RecordDishRequest {
+  Dish dish = 1;
+}
+message RecordDishResponse {
+  string id = 1;
+}
+
 service IngestService {
   rpc RecordChannel(RecordChannelRequest) returns (RecordChannelResponse);
   rpc RecordIngestRun(RecordIngestRunRequest) returns (RecordIngestRunResponse);
@@ -250,4 +277,6 @@ service IngestService {
   rpc RecordPurchaseOption(RecordPurchaseOptionRequest) returns (RecordPurchaseOptionResponse);
   rpc RecordStoreMatch(RecordStoreMatchRequest) returns (RecordStoreMatchResponse);
   rpc RecordItemMatch(RecordItemMatchRequest) returns (RecordItemMatchResponse);
+  rpc RecordBrand(RecordBrandRequest) returns (RecordBrandResponse);
+  rpc RecordDish(RecordDishRequest) returns (RecordDishResponse);
 }

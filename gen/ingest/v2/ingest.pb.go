@@ -2485,6 +2485,310 @@ func (x *RecordItemMatchResponse) GetId() string {
 	return ""
 }
 
+type Brand struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Slug          string                 `protobuf:"bytes,2,opt,name=slug,proto3" json:"slug,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Brand) Reset() {
+	*x = Brand{}
+	mi := &file_ingest_v2_ingest_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Brand) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Brand) ProtoMessage() {}
+
+func (x *Brand) ProtoReflect() protoreflect.Message {
+	mi := &file_ingest_v2_ingest_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Brand.ProtoReflect.Descriptor instead.
+func (*Brand) Descriptor() ([]byte, []int) {
+	return file_ingest_v2_ingest_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *Brand) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Brand) GetSlug() string {
+	if x != nil {
+		return x.Slug
+	}
+	return ""
+}
+
+func (x *Brand) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type Dish struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	BrandId       string                 `protobuf:"bytes,2,opt,name=brand_id,json=brandId,proto3" json:"brand_id,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Dish) Reset() {
+	*x = Dish{}
+	mi := &file_ingest_v2_ingest_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Dish) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Dish) ProtoMessage() {}
+
+func (x *Dish) ProtoReflect() protoreflect.Message {
+	mi := &file_ingest_v2_ingest_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Dish.ProtoReflect.Descriptor instead.
+func (*Dish) Descriptor() ([]byte, []int) {
+	return file_ingest_v2_ingest_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *Dish) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Dish) GetBrandId() string {
+	if x != nil {
+		return x.BrandId
+	}
+	return ""
+}
+
+func (x *Dish) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Dish) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+type RecordBrandRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Brand         *Brand                 `protobuf:"bytes,1,opt,name=brand,proto3" json:"brand,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordBrandRequest) Reset() {
+	*x = RecordBrandRequest{}
+	mi := &file_ingest_v2_ingest_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordBrandRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordBrandRequest) ProtoMessage() {}
+
+func (x *RecordBrandRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_ingest_v2_ingest_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordBrandRequest.ProtoReflect.Descriptor instead.
+func (*RecordBrandRequest) Descriptor() ([]byte, []int) {
+	return file_ingest_v2_ingest_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *RecordBrandRequest) GetBrand() *Brand {
+	if x != nil {
+		return x.Brand
+	}
+	return nil
+}
+
+type RecordBrandResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordBrandResponse) Reset() {
+	*x = RecordBrandResponse{}
+	mi := &file_ingest_v2_ingest_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordBrandResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordBrandResponse) ProtoMessage() {}
+
+func (x *RecordBrandResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ingest_v2_ingest_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordBrandResponse.ProtoReflect.Descriptor instead.
+func (*RecordBrandResponse) Descriptor() ([]byte, []int) {
+	return file_ingest_v2_ingest_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *RecordBrandResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type RecordDishRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Dish          *Dish                  `protobuf:"bytes,1,opt,name=dish,proto3" json:"dish,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordDishRequest) Reset() {
+	*x = RecordDishRequest{}
+	mi := &file_ingest_v2_ingest_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordDishRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordDishRequest) ProtoMessage() {}
+
+func (x *RecordDishRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_ingest_v2_ingest_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordDishRequest.ProtoReflect.Descriptor instead.
+func (*RecordDishRequest) Descriptor() ([]byte, []int) {
+	return file_ingest_v2_ingest_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *RecordDishRequest) GetDish() *Dish {
+	if x != nil {
+		return x.Dish
+	}
+	return nil
+}
+
+type RecordDishResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordDishResponse) Reset() {
+	*x = RecordDishResponse{}
+	mi := &file_ingest_v2_ingest_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordDishResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordDishResponse) ProtoMessage() {}
+
+func (x *RecordDishResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ingest_v2_ingest_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordDishResponse.ProtoReflect.Descriptor instead.
+func (*RecordDishResponse) Descriptor() ([]byte, []int) {
+	return file_ingest_v2_ingest_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *RecordDishResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 var File_ingest_v2_ingest_proto protoreflect.FileDescriptor
 
 const file_ingest_v2_ingest_proto_rawDesc = "" +
@@ -2665,8 +2969,24 @@ const file_ingest_v2_ingest_proto_rawDesc = "" +
 	"\x16RecordItemMatchRequest\x12*\n" +
 	"\x05match\x18\x01 \x01(\v2\x14.ingest.v2.ItemMatchR\x05match\")\n" +
 	"\x17RecordItemMatchResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\x81\n" +
-	"\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"?\n" +
+	"\x05Brand\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\"g\n" +
+	"\x04Dish\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x19\n" +
+	"\bbrand_id\x18\x02 \x01(\tR\abrandId\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\"<\n" +
+	"\x12RecordBrandRequest\x12&\n" +
+	"\x05brand\x18\x01 \x01(\v2\x10.ingest.v2.BrandR\x05brand\"%\n" +
+	"\x13RecordBrandResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
+	"\x11RecordDishRequest\x12#\n" +
+	"\x04dish\x18\x01 \x01(\v2\x0f.ingest.v2.DishR\x04dish\"$\n" +
+	"\x12RecordDishResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id2\x9a\v\n" +
 	"\rIngestService\x12R\n" +
 	"\rRecordChannel\x12\x1f.ingest.v2.RecordChannelRequest\x1a .ingest.v2.RecordChannelResponse\x12X\n" +
 	"\x0fRecordIngestRun\x12!.ingest.v2.RecordIngestRunRequest\x1a\".ingest.v2.RecordIngestRunResponse\x12g\n" +
@@ -2680,7 +3000,10 @@ const file_ingest_v2_ingest_proto_rawDesc = "" +
 	"\vRecordPlace\x12\x1d.ingest.v2.RecordPlaceRequest\x1a\x1e.ingest.v2.RecordPlaceResponse\x12g\n" +
 	"\x14RecordPurchaseOption\x12&.ingest.v2.RecordPurchaseOptionRequest\x1a'.ingest.v2.RecordPurchaseOptionResponse\x12[\n" +
 	"\x10RecordStoreMatch\x12\".ingest.v2.RecordStoreMatchRequest\x1a#.ingest.v2.RecordStoreMatchResponse\x12X\n" +
-	"\x0fRecordItemMatch\x12!.ingest.v2.RecordItemMatchRequest\x1a\".ingest.v2.RecordItemMatchResponseBGZEgithub.com/ChristianDenniss/platform-contracts/gen/ingest/v2;ingestv2b\x06proto3"
+	"\x0fRecordItemMatch\x12!.ingest.v2.RecordItemMatchRequest\x1a\".ingest.v2.RecordItemMatchResponse\x12L\n" +
+	"\vRecordBrand\x12\x1d.ingest.v2.RecordBrandRequest\x1a\x1e.ingest.v2.RecordBrandResponse\x12I\n" +
+	"\n" +
+	"RecordDish\x12\x1c.ingest.v2.RecordDishRequest\x1a\x1d.ingest.v2.RecordDishResponseBGZEgithub.com/ChristianDenniss/platform-contracts/gen/ingest/v2;ingestv2b\x06proto3"
 
 var (
 	file_ingest_v2_ingest_proto_rawDescOnce sync.Once
@@ -2694,7 +3017,7 @@ func file_ingest_v2_ingest_proto_rawDescGZIP() []byte {
 	return file_ingest_v2_ingest_proto_rawDescData
 }
 
-var file_ingest_v2_ingest_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
+var file_ingest_v2_ingest_proto_msgTypes = make([]protoimpl.MessageInfo, 48)
 var file_ingest_v2_ingest_proto_goTypes = []any{
 	(*Money)(nil),                              // 0: ingest.v2.Money
 	(*Location)(nil),                           // 1: ingest.v2.Location
@@ -2738,6 +3061,12 @@ var file_ingest_v2_ingest_proto_goTypes = []any{
 	(*RecordStoreMatchResponse)(nil),           // 39: ingest.v2.RecordStoreMatchResponse
 	(*RecordItemMatchRequest)(nil),             // 40: ingest.v2.RecordItemMatchRequest
 	(*RecordItemMatchResponse)(nil),            // 41: ingest.v2.RecordItemMatchResponse
+	(*Brand)(nil),                              // 42: ingest.v2.Brand
+	(*Dish)(nil),                               // 43: ingest.v2.Dish
+	(*RecordBrandRequest)(nil),                 // 44: ingest.v2.RecordBrandRequest
+	(*RecordBrandResponse)(nil),                // 45: ingest.v2.RecordBrandResponse
+	(*RecordDishRequest)(nil),                  // 46: ingest.v2.RecordDishRequest
+	(*RecordDishResponse)(nil),                 // 47: ingest.v2.RecordDishResponse
 }
 var file_ingest_v2_ingest_proto_depIdxs = []int32{
 	1,  // 0: ingest.v2.SourceStore.location:type_name -> ingest.v2.Location
@@ -2758,37 +3087,43 @@ var file_ingest_v2_ingest_proto_depIdxs = []int32{
 	31, // 15: ingest.v2.RecordPurchaseOptionRequest.option:type_name -> ingest.v2.PurchaseOption
 	32, // 16: ingest.v2.RecordStoreMatchRequest.match:type_name -> ingest.v2.StoreMatch
 	33, // 17: ingest.v2.RecordItemMatchRequest.match:type_name -> ingest.v2.ItemMatch
-	12, // 18: ingest.v2.IngestService.RecordChannel:input_type -> ingest.v2.RecordChannelRequest
-	14, // 19: ingest.v2.IngestService.RecordIngestRun:input_type -> ingest.v2.RecordIngestRunRequest
-	16, // 20: ingest.v2.IngestService.RecordSourceSnapshot:input_type -> ingest.v2.RecordSourceSnapshotRequest
-	18, // 21: ingest.v2.IngestService.RecordSourceStore:input_type -> ingest.v2.RecordSourceStoreRequest
-	20, // 22: ingest.v2.IngestService.RecordSourceMenu:input_type -> ingest.v2.RecordSourceMenuRequest
-	22, // 23: ingest.v2.IngestService.RecordSourceCategory:input_type -> ingest.v2.RecordSourceCategoryRequest
-	24, // 24: ingest.v2.IngestService.RecordSourceItem:input_type -> ingest.v2.RecordSourceItemRequest
-	26, // 25: ingest.v2.IngestService.RecordItemPriceObservation:input_type -> ingest.v2.RecordItemPriceObservationRequest
-	28, // 26: ingest.v2.IngestService.RecordQuoteObservation:input_type -> ingest.v2.RecordQuoteObservationRequest
-	34, // 27: ingest.v2.IngestService.RecordPlace:input_type -> ingest.v2.RecordPlaceRequest
-	36, // 28: ingest.v2.IngestService.RecordPurchaseOption:input_type -> ingest.v2.RecordPurchaseOptionRequest
-	38, // 29: ingest.v2.IngestService.RecordStoreMatch:input_type -> ingest.v2.RecordStoreMatchRequest
-	40, // 30: ingest.v2.IngestService.RecordItemMatch:input_type -> ingest.v2.RecordItemMatchRequest
-	13, // 31: ingest.v2.IngestService.RecordChannel:output_type -> ingest.v2.RecordChannelResponse
-	15, // 32: ingest.v2.IngestService.RecordIngestRun:output_type -> ingest.v2.RecordIngestRunResponse
-	17, // 33: ingest.v2.IngestService.RecordSourceSnapshot:output_type -> ingest.v2.RecordSourceSnapshotResponse
-	19, // 34: ingest.v2.IngestService.RecordSourceStore:output_type -> ingest.v2.RecordSourceStoreResponse
-	21, // 35: ingest.v2.IngestService.RecordSourceMenu:output_type -> ingest.v2.RecordSourceMenuResponse
-	23, // 36: ingest.v2.IngestService.RecordSourceCategory:output_type -> ingest.v2.RecordSourceCategoryResponse
-	25, // 37: ingest.v2.IngestService.RecordSourceItem:output_type -> ingest.v2.RecordSourceItemResponse
-	27, // 38: ingest.v2.IngestService.RecordItemPriceObservation:output_type -> ingest.v2.RecordItemPriceObservationResponse
-	29, // 39: ingest.v2.IngestService.RecordQuoteObservation:output_type -> ingest.v2.RecordQuoteObservationResponse
-	35, // 40: ingest.v2.IngestService.RecordPlace:output_type -> ingest.v2.RecordPlaceResponse
-	37, // 41: ingest.v2.IngestService.RecordPurchaseOption:output_type -> ingest.v2.RecordPurchaseOptionResponse
-	39, // 42: ingest.v2.IngestService.RecordStoreMatch:output_type -> ingest.v2.RecordStoreMatchResponse
-	41, // 43: ingest.v2.IngestService.RecordItemMatch:output_type -> ingest.v2.RecordItemMatchResponse
-	31, // [31:44] is the sub-list for method output_type
-	18, // [18:31] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	42, // 18: ingest.v2.RecordBrandRequest.brand:type_name -> ingest.v2.Brand
+	43, // 19: ingest.v2.RecordDishRequest.dish:type_name -> ingest.v2.Dish
+	12, // 20: ingest.v2.IngestService.RecordChannel:input_type -> ingest.v2.RecordChannelRequest
+	14, // 21: ingest.v2.IngestService.RecordIngestRun:input_type -> ingest.v2.RecordIngestRunRequest
+	16, // 22: ingest.v2.IngestService.RecordSourceSnapshot:input_type -> ingest.v2.RecordSourceSnapshotRequest
+	18, // 23: ingest.v2.IngestService.RecordSourceStore:input_type -> ingest.v2.RecordSourceStoreRequest
+	20, // 24: ingest.v2.IngestService.RecordSourceMenu:input_type -> ingest.v2.RecordSourceMenuRequest
+	22, // 25: ingest.v2.IngestService.RecordSourceCategory:input_type -> ingest.v2.RecordSourceCategoryRequest
+	24, // 26: ingest.v2.IngestService.RecordSourceItem:input_type -> ingest.v2.RecordSourceItemRequest
+	26, // 27: ingest.v2.IngestService.RecordItemPriceObservation:input_type -> ingest.v2.RecordItemPriceObservationRequest
+	28, // 28: ingest.v2.IngestService.RecordQuoteObservation:input_type -> ingest.v2.RecordQuoteObservationRequest
+	34, // 29: ingest.v2.IngestService.RecordPlace:input_type -> ingest.v2.RecordPlaceRequest
+	36, // 30: ingest.v2.IngestService.RecordPurchaseOption:input_type -> ingest.v2.RecordPurchaseOptionRequest
+	38, // 31: ingest.v2.IngestService.RecordStoreMatch:input_type -> ingest.v2.RecordStoreMatchRequest
+	40, // 32: ingest.v2.IngestService.RecordItemMatch:input_type -> ingest.v2.RecordItemMatchRequest
+	44, // 33: ingest.v2.IngestService.RecordBrand:input_type -> ingest.v2.RecordBrandRequest
+	46, // 34: ingest.v2.IngestService.RecordDish:input_type -> ingest.v2.RecordDishRequest
+	13, // 35: ingest.v2.IngestService.RecordChannel:output_type -> ingest.v2.RecordChannelResponse
+	15, // 36: ingest.v2.IngestService.RecordIngestRun:output_type -> ingest.v2.RecordIngestRunResponse
+	17, // 37: ingest.v2.IngestService.RecordSourceSnapshot:output_type -> ingest.v2.RecordSourceSnapshotResponse
+	19, // 38: ingest.v2.IngestService.RecordSourceStore:output_type -> ingest.v2.RecordSourceStoreResponse
+	21, // 39: ingest.v2.IngestService.RecordSourceMenu:output_type -> ingest.v2.RecordSourceMenuResponse
+	23, // 40: ingest.v2.IngestService.RecordSourceCategory:output_type -> ingest.v2.RecordSourceCategoryResponse
+	25, // 41: ingest.v2.IngestService.RecordSourceItem:output_type -> ingest.v2.RecordSourceItemResponse
+	27, // 42: ingest.v2.IngestService.RecordItemPriceObservation:output_type -> ingest.v2.RecordItemPriceObservationResponse
+	29, // 43: ingest.v2.IngestService.RecordQuoteObservation:output_type -> ingest.v2.RecordQuoteObservationResponse
+	35, // 44: ingest.v2.IngestService.RecordPlace:output_type -> ingest.v2.RecordPlaceResponse
+	37, // 45: ingest.v2.IngestService.RecordPurchaseOption:output_type -> ingest.v2.RecordPurchaseOptionResponse
+	39, // 46: ingest.v2.IngestService.RecordStoreMatch:output_type -> ingest.v2.RecordStoreMatchResponse
+	41, // 47: ingest.v2.IngestService.RecordItemMatch:output_type -> ingest.v2.RecordItemMatchResponse
+	45, // 48: ingest.v2.IngestService.RecordBrand:output_type -> ingest.v2.RecordBrandResponse
+	47, // 49: ingest.v2.IngestService.RecordDish:output_type -> ingest.v2.RecordDishResponse
+	35, // [35:50] is the sub-list for method output_type
+	20, // [20:35] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_ingest_v2_ingest_proto_init() }
@@ -2802,7 +3137,7 @@ func file_ingest_v2_ingest_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ingest_v2_ingest_proto_rawDesc), len(file_ingest_v2_ingest_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   42,
+			NumMessages:   48,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

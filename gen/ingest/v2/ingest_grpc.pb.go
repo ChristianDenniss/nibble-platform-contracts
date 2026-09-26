@@ -32,6 +32,8 @@ const (
 	IngestService_RecordPurchaseOption_FullMethodName       = "/ingest.v2.IngestService/RecordPurchaseOption"
 	IngestService_RecordStoreMatch_FullMethodName           = "/ingest.v2.IngestService/RecordStoreMatch"
 	IngestService_RecordItemMatch_FullMethodName            = "/ingest.v2.IngestService/RecordItemMatch"
+	IngestService_RecordBrand_FullMethodName                = "/ingest.v2.IngestService/RecordBrand"
+	IngestService_RecordDish_FullMethodName                 = "/ingest.v2.IngestService/RecordDish"
 )
 
 // IngestServiceClient is the client API for IngestService service.
@@ -51,6 +53,8 @@ type IngestServiceClient interface {
 	RecordPurchaseOption(ctx context.Context, in *RecordPurchaseOptionRequest, opts ...grpc.CallOption) (*RecordPurchaseOptionResponse, error)
 	RecordStoreMatch(ctx context.Context, in *RecordStoreMatchRequest, opts ...grpc.CallOption) (*RecordStoreMatchResponse, error)
 	RecordItemMatch(ctx context.Context, in *RecordItemMatchRequest, opts ...grpc.CallOption) (*RecordItemMatchResponse, error)
+	RecordBrand(ctx context.Context, in *RecordBrandRequest, opts ...grpc.CallOption) (*RecordBrandResponse, error)
+	RecordDish(ctx context.Context, in *RecordDishRequest, opts ...grpc.CallOption) (*RecordDishResponse, error)
 }
 
 type ingestServiceClient struct {
@@ -191,6 +195,26 @@ func (c *ingestServiceClient) RecordItemMatch(ctx context.Context, in *RecordIte
 	return out, nil
 }
 
+func (c *ingestServiceClient) RecordBrand(ctx context.Context, in *RecordBrandRequest, opts ...grpc.CallOption) (*RecordBrandResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RecordBrandResponse)
+	err := c.cc.Invoke(ctx, IngestService_RecordBrand_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ingestServiceClient) RecordDish(ctx context.Context, in *RecordDishRequest, opts ...grpc.CallOption) (*RecordDishResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RecordDishResponse)
+	err := c.cc.Invoke(ctx, IngestService_RecordDish_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IngestServiceServer is the server API for IngestService service.
 // All implementations must embed UnimplementedIngestServiceServer
 // for forward compatibility.
@@ -208,6 +232,8 @@ type IngestServiceServer interface {
 	RecordPurchaseOption(context.Context, *RecordPurchaseOptionRequest) (*RecordPurchaseOptionResponse, error)
 	RecordStoreMatch(context.Context, *RecordStoreMatchRequest) (*RecordStoreMatchResponse, error)
 	RecordItemMatch(context.Context, *RecordItemMatchRequest) (*RecordItemMatchResponse, error)
+	RecordBrand(context.Context, *RecordBrandRequest) (*RecordBrandResponse, error)
+	RecordDish(context.Context, *RecordDishRequest) (*RecordDishResponse, error)
 	mustEmbedUnimplementedIngestServiceServer()
 }
 
@@ -256,6 +282,12 @@ func (UnimplementedIngestServiceServer) RecordStoreMatch(context.Context, *Recor
 }
 func (UnimplementedIngestServiceServer) RecordItemMatch(context.Context, *RecordItemMatchRequest) (*RecordItemMatchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RecordItemMatch not implemented")
+}
+func (UnimplementedIngestServiceServer) RecordBrand(context.Context, *RecordBrandRequest) (*RecordBrandResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecordBrand not implemented")
+}
+func (UnimplementedIngestServiceServer) RecordDish(context.Context, *RecordDishRequest) (*RecordDishResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecordDish not implemented")
 }
 func (UnimplementedIngestServiceServer) mustEmbedUnimplementedIngestServiceServer() {}
 func (UnimplementedIngestServiceServer) testEmbeddedByValue()                       {}
@@ -512,6 +544,42 @@ func _IngestService_RecordItemMatch_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IngestService_RecordBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecordBrandRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IngestServiceServer).RecordBrand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IngestService_RecordBrand_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IngestServiceServer).RecordBrand(ctx, req.(*RecordBrandRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IngestService_RecordDish_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecordDishRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IngestServiceServer).RecordDish(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IngestService_RecordDish_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IngestServiceServer).RecordDish(ctx, req.(*RecordDishRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IngestService_ServiceDesc is the grpc.ServiceDesc for IngestService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -570,6 +638,14 @@ var IngestService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RecordItemMatch",
 			Handler:    _IngestService_RecordItemMatch_Handler,
+		},
+		{
+			MethodName: "RecordBrand",
+			Handler:    _IngestService_RecordBrand_Handler,
+		},
+		{
+			MethodName: "RecordDish",
+			Handler:    _IngestService_RecordDish_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

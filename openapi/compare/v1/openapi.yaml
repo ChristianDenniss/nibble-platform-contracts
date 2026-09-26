@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: Nibble Compare API
+  version: 1.0.0
+  description: |
+    HTTP compare contract (meta-pricing). Persisted on compare_sessions.result_snapshot.
+    Fulfillment is how food moves; delivery_executor applies when fulfillment is delivery.
+servers:
+  - url: http://localhost:8080
+    description: local api-engine
+paths:
+  /v1/compare:
+    post:
+      operationId: createCompare
+      summary: Rank purchase paths for a place and basket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompareRequest'
+      responses:
+        '200':
+          description: Ranked paths and recommendation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompareResponse'
+        '400':
+          description: Invalid request or compare error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+  /v1/compare/sessions/{id}:
+    get:
+      operationId: getCompareSession
+      summary: Fetch a stored compare session
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session wrapper with result blob
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompareSessionEnvelope'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+components:
+  schemas:
+    Money:
+      type: object
+      required: [amount_cents, currency]
+      properties:
+        amount_cents:
+          type: integer
+          format: int64
+        currency:
+          type: string
+          example: CAD
+    DropoffPoint:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        label:
+          type: string
+    FulfillmentContext:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: delivery, pickup, drive_thru, in_store, dine_in
+        dropoff:
+          $ref: '#/components/schemas/DropoffPoint'
+    BasketLine:
+      type: object
+      properties:
+        dish_id:
+          type: string
+        source_item_id:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+    Basket:
+      type: object
+      required: [lines]
+      properties:
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/BasketLine'
+    ComparePrefs:
+      type: object
+      properties:
+        allowed_fulfillment_modes:
+          type: array
+          items:
+            type: string
+        willing_to_use_aggregator:
+          type: boolean
+        allowed_channel_ids:
+          type: array
+          items:
+            type: string
+        blocked_channel_ids:
+          type: array
+          items:
+            type: string
+        drive_thru_ok:
+          type: boolean
+        merchant_direct_ok:
+          type: boolean
+    CompareRequest:
+      type: object
+      required: [place_id, basket]
+      properties:
+        place_id:
+          type: string
+        user_id:
+          type: string
+        fulfillment_context:
+          $ref: '#/components/schemas/FulfillmentContext'
+        basket:
+          $ref: '#/components/schemas/Basket'
+        filters:
+          $ref: '#/components/schemas/ComparePrefs'
+        memberships:
+          type: array
+          items:
+            type: string
+          description: Membership tier slugs (e.g. dashpass)
+        quote_preference:
+          type: string
+          example: indicative_first
+    PathRank:
+      type: object
+      properties:
+        purchase_option_id:
+          type: string
+        rank:
+          type: integer
+        kind:
+          type: string
+        headline:
+          type: string
+        confidence:
+          type: string
+        all_in:
+          $ref: '#/components/schemas/Money'
+        fulfillment_mode:
+          type: string
+        delivery_executor:
+          type: string
+          description: third_party or merchant when fulfillment_mode is delivery
+        channel_id:
+          type: string
+        rationale_bullets:
+          type: array
+          items:
+            type: string
+    UnavailablePath:
+      type: object
+      properties:
+        purchase_option_id:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+    CompareResponse:
+      type: object
+      properties:
+        compare_session_id:
+          type: string
+        observed_at:
+          type: string
+          format: date-time
+        place:
+          type: object
+          additionalProperties:
+            type: string
+        paths_ranked:
+          type: integer
+        recommendation:
+          $ref: '#/components/schemas/PathRank'
+        runners_up:
+          type: array
+          items:
+            $ref: '#/components/schemas/PathRank'
+        unavailable_paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnavailablePath'
+        query:
+          $ref: '#/components/schemas/CompareRequest'
+    CompareSessionEnvelope:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        place_id:
+          type: string
+        query_snapshot: {}
+        basket_snapshot: {}
+        result: {}
+    ErrorBody:
+      type: object
+      properties:
+        error:
+          type: string
