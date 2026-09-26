@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package ingest.v1;
+
+option go_package = "github.com/ChristianDenniss/platform-contracts/gen/ingest/v1;ingestv1";
+
+message Money {
+  int64 amount_cents = 1;
+  string currency = 2;
+}
+
+message Location {
+  double latitude = 1;
+  double longitude = 2;
+  string address = 3;
+}
+
+message Provider {
+  string id = 1;
+  string name = 2;
+}
+
+message Restaurant {
+  string id = 1;
+  string name = 2;
+  Location location = 3;
+}
+
+message MenuItem {
+  string id = 1;
+  string restaurant_id = 2;
+  string name = 3;
+}
+
+message Offer {
+  string id = 1;
+  string restaurant_id = 2;
+  string provider_id = 3;
+  string menu_item_id = 4;
+  Money price = 5;
+}
+
+message PriceObservation {
+  string id = 1;
+  string offer_id = 2;
+  Money price = 3;
+  int64 observed_at_unix_ms = 4;
+}
+
+message RecordRestaurantRequest {
+  Restaurant restaurant = 1;
+}
+
+message RecordRestaurantResponse {
+  string id = 1;
+}
+
+message RecordMenuItemRequest {
+  MenuItem menu_item = 1;
+}
+
+message RecordMenuItemResponse {
+  string id = 1;
+}
+
+message RecordOfferRequest {
+  Offer offer = 1;
+}
+
+message RecordOfferResponse {
+  string id = 1;
+}
+
+message RecordPriceObservationRequest {
+  PriceObservation price_observation = 1;
+}
+
+message RecordPriceObservationResponse {
+  string id = 1;
+}
+
+service IngestService {
+  rpc RecordRestaurant(RecordRestaurantRequest) returns (RecordRestaurantResponse);
+  rpc RecordMenuItem(RecordMenuItemRequest) returns (RecordMenuItemResponse);
+  rpc RecordOffer(RecordOfferRequest) returns (RecordOfferResponse);
+  rpc RecordPriceObservation(RecordPriceObservationRequest) returns (RecordPriceObservationResponse);
+}
