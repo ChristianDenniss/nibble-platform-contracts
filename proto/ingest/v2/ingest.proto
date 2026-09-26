@@ -1,0 +1,253 @@
+syntax = "proto3";
+
+package ingest.v2;
+
+option go_package = "github.com/ChristianDenniss/platform-contracts/gen/ingest/v2;ingestv2";
+
+message Money {
+  int64 amount_cents = 1;
+  string currency = 2;
+}
+
+message Location {
+  double latitude = 1;
+  double longitude = 2;
+  string address = 3;
+  string city = 4;
+  string region = 5;
+  string postal_code = 6;
+}
+
+message Channel {
+  string id = 1;
+  string slug = 2;
+  string kind = 3;
+  string name = 4;
+}
+
+message SourceStore {
+  string id = 1;
+  string channel_id = 2;
+  string external_store_id = 3;
+  string name = 4;
+  Location location = 5;
+  string phone = 6;
+}
+
+message SourceMenu {
+  string id = 1;
+  string source_store_id = 2;
+  string fulfillment_mode = 3;
+  string external_menu_id = 4;
+  string delivery_executor = 5;
+}
+
+message SourceCategory {
+  string id = 1;
+  string source_menu_id = 2;
+  string external_category_id = 3;
+  string name = 4;
+  int32 sort_order = 5;
+}
+
+message SourceItem {
+  string id = 1;
+  string source_category_id = 2;
+  string external_item_id = 3;
+  string name = 4;
+  string description = 5;
+  bool available = 6;
+}
+
+message SourceSnapshot {
+  string id = 1;
+  string ingest_run_id = 2;
+  string external_store_id = 3;
+  string content_type = 4;
+  bytes raw_json = 5;
+  string checksum = 6;
+  int64 observed_at_unix_ms = 7;
+}
+
+message ItemPriceObservation {
+  string id = 1;
+  string source_item_id = 2;
+  string ingest_run_id = 3;
+  Money price = 4;
+  string fulfillment_mode = 5;
+  int64 observed_at_unix_ms = 6;
+  string delivery_executor = 7;
+}
+
+message QuoteFeeLine {
+  string id = 1;
+  string kind = 2;
+  Money amount = 3;
+  double percent = 4;
+  int64 threshold_cents = 5;
+}
+
+message QuoteObservation {
+  string id = 1;
+  string source_store_id = 2;
+  string channel_id = 3;
+  string fulfillment_mode = 4;
+  string dropoff_geohash = 5;
+  string membership_tier = 6;
+  string quote_kind = 7;
+  int64 basket_subtotal_cents = 8;
+  int64 observed_at_unix_ms = 9;
+  string ingest_run_id = 10;
+  repeated QuoteFeeLine fee_lines = 11;
+  string delivery_executor = 12;
+}
+
+message IngestRun {
+  string id = 1;
+  string job_type = 2;
+  string channel_id = 3;
+  int64 started_at_unix_ms = 4;
+  int64 finished_at_unix_ms = 5;
+  string parser_version = 6;
+}
+
+message RecordChannelRequest {
+  Channel channel = 1;
+}
+message RecordChannelResponse {
+  string id = 1;
+}
+
+message RecordIngestRunRequest {
+  IngestRun run = 1;
+}
+message RecordIngestRunResponse {
+  string id = 1;
+}
+
+message RecordSourceSnapshotRequest {
+  SourceSnapshot snapshot = 1;
+}
+message RecordSourceSnapshotResponse {
+  string id = 1;
+}
+
+message RecordSourceStoreRequest {
+  SourceStore store = 1;
+}
+message RecordSourceStoreResponse {
+  string id = 1;
+}
+
+message RecordSourceMenuRequest {
+  SourceMenu menu = 1;
+}
+message RecordSourceMenuResponse {
+  string id = 1;
+}
+
+message RecordSourceCategoryRequest {
+  SourceCategory category = 1;
+}
+message RecordSourceCategoryResponse {
+  string id = 1;
+}
+
+message RecordSourceItemRequest {
+  SourceItem item = 1;
+}
+message RecordSourceItemResponse {
+  string id = 1;
+}
+
+message RecordItemPriceObservationRequest {
+  ItemPriceObservation observation = 1;
+}
+message RecordItemPriceObservationResponse {
+  string id = 1;
+}
+
+message RecordQuoteObservationRequest {
+  QuoteObservation observation = 1;
+}
+message RecordQuoteObservationResponse {
+  string id = 1;
+}
+
+message Place {
+  string id = 1;
+  string brand_id = 2;
+  string name = 3;
+  Location location = 4;
+}
+
+message PurchaseOption {
+  string id = 1;
+  string place_id = 2;
+  string channel_id = 3;
+  string fulfillment_mode = 4;
+  string source_store_id = 5;
+  string delivery_executor = 6;
+}
+
+message StoreMatch {
+  string id = 1;
+  string source_store_id = 2;
+  string place_id = 3;
+  double confidence = 4;
+  string status = 5;
+  string method = 6;
+}
+
+message ItemMatch {
+  string id = 1;
+  string source_item_id = 2;
+  string dish_id = 3;
+  double confidence = 4;
+  string status = 5;
+  string method = 6;
+}
+
+message RecordPlaceRequest {
+  Place place = 1;
+}
+message RecordPlaceResponse {
+  string id = 1;
+}
+
+message RecordPurchaseOptionRequest {
+  PurchaseOption option = 1;
+}
+message RecordPurchaseOptionResponse {
+  string id = 1;
+}
+
+message RecordStoreMatchRequest {
+  StoreMatch match = 1;
+}
+message RecordStoreMatchResponse {
+  string id = 1;
+}
+
+message RecordItemMatchRequest {
+  ItemMatch match = 1;
+}
+message RecordItemMatchResponse {
+  string id = 1;
+}
+
+service IngestService {
+  rpc RecordChannel(RecordChannelRequest) returns (RecordChannelResponse);
+  rpc RecordIngestRun(RecordIngestRunRequest) returns (RecordIngestRunResponse);
+  rpc RecordSourceSnapshot(RecordSourceSnapshotRequest) returns (RecordSourceSnapshotResponse);
+  rpc RecordSourceStore(RecordSourceStoreRequest) returns (RecordSourceStoreResponse);
+  rpc RecordSourceMenu(RecordSourceMenuRequest) returns (RecordSourceMenuResponse);
+  rpc RecordSourceCategory(RecordSourceCategoryRequest) returns (RecordSourceCategoryResponse);
+  rpc RecordSourceItem(RecordSourceItemRequest) returns (RecordSourceItemResponse);
+  rpc RecordItemPriceObservation(RecordItemPriceObservationRequest) returns (RecordItemPriceObservationResponse);
+  rpc RecordQuoteObservation(RecordQuoteObservationRequest) returns (RecordQuoteObservationResponse);
+  rpc RecordPlace(RecordPlaceRequest) returns (RecordPlaceResponse);
+  rpc RecordPurchaseOption(RecordPurchaseOptionRequest) returns (RecordPurchaseOptionResponse);
+  rpc RecordStoreMatch(RecordStoreMatchRequest) returns (RecordStoreMatchResponse);
+  rpc RecordItemMatch(RecordItemMatchRequest) returns (RecordItemMatchResponse);
+}
