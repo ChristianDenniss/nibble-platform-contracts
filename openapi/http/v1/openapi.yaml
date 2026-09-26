@@ -19,5 +19,11 @@ paths:
     $ref: '../../compare/v1/openapi.yaml#/paths/~1v1~1compare'
   /v1/compare/sessions/{id}:
     $ref: '../../compare/v1/openapi.yaml#/paths/~1v1~1compare~1sessions~1{id}'
+  /v1/channels/{channelId}/source-stores:
+    $ref: '../../source/v1/openapi.yaml#/paths/~1v1~1channels~1{channelId}~1source-stores'
   /v1/source-stores/{storeId}/menu:
     $ref: '../../source/v1/openapi.yaml#/paths/~1v1~1source-stores~1{storeId}~1menu'
+  /v1/accounts/{accountId}/addresses/{addressId}:
+    $ref: '../../account/v1/openapi.yaml#/paths/~1v1~1accounts~1{accountId}~1addresses~1{addressId}'
+  /v1/accounts/{accountId}/addresses/{addressId}/current:
+    $ref: '../../account/v1/openapi.yaml#/paths/~1v1~1accounts~1{accountId}~1addresses~1{addressId}~1current'
