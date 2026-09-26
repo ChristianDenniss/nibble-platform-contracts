@@ -4,6 +4,29 @@ info:
   version: 1.0.0
   description: Phase 1 single-channel menu browse (source plane).
 paths:
+  /v1/channels/{channelId}/source-stores:
+    get:
+      operationId: listSourceStoresByChannel
+      summary: List source stores for a channel
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: ch_store
+      responses:
+        '200':
+          description: Stores on this channel
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stores:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SourceStore'
   /v1/source-stores/{storeId}/menu:
     get:
       operationId: getSourceStoreMenu
