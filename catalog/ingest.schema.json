@@ -13,13 +13,16 @@
     "providers": {
       "type": "object",
       "minProperties": 1,
-      "maxProperties": 2,
+      "maxProperties": 3,
       "additionalProperties": false,
       "properties": {
         "Uber Eats": {
           "$ref": "#/$defs/snapshot"
         },
         "DoorDash": {
+          "$ref": "#/$defs/snapshot"
+        },
+        "SkipTheDishes": {
           "$ref": "#/$defs/snapshot"
         }
       }

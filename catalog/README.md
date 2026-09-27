@@ -61,3 +61,27 @@ remain null until a basket/address-specific quote exists. Per-item fees are
 not added together, and unverified promotions are not deducted. No cheapest
 delivered provider is claimed from partial baskets or unknown fees. Provider
 menu links do not automatically transfer the cart into a delivery app.
+
+## Provider ranking and handoff
+
+Supported acquisition names are Uber Eats, DoorDash and SkipTheDishes. Availability
+is branch-specific and requires a reviewed match. Complete, non-starting-price
+baskets sort by listed item subtotal; `lowestListedSubtotal` marks the minimum
+(and ties) only when at least two such baskets exist. This is not a delivered
+cost ranking. Incomplete and starting-price baskets cannot receive that badge.
+`handoffMode` is currently `menu_link` for all providers.
+
+`POST /v1/catalog/cart-handoff` accepts `restaurantId`, `lines` and `provider`.
+The API validates the basket and resolves the linked provider URL server-side.
+It returns `provider`, `mode: "menu_link"`, `url`, `cartTransferred: false`, and
+`cartText` containing restaurant/address and quantities. Unknown providers for
+that branch return 400. The UI offers an explicit copy-order and open-menu step.
+This endpoint does not call any provider checkout API or create external carts.
+
+Automatic transfer requires a separately approved provider integration, real
+provider item/option IDs and a created cart/session URL. Do not turn a menu URL
+into a claimed cart transfer. DoorDash documents an authenticated checkout
+session flow, distinct from redirecting into a consumer app:
+https://developer.doordash.com/en-US/api/external_checkout/
+No working consumer cart-write integration for Uber Eats or Skip was established
+in this implementation. No credentials or customer sessions are embedded.
