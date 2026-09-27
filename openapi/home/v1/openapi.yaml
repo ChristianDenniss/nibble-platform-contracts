@@ -1,0 +1,162 @@
+openapi: 3.0.3
+info:
+  title: Nibble Home Feed API
+  version: 1.0.0
+  description: |
+    Home feed read model: banners and rails composed from the storefront catalog,
+    active public promotions (plane 6), and sponsored placements (plane 9).
+    Items reference storefront restaurant ids; the client joins them with GET /v1/storefront.
+
+    Neutrality (D28): the `popular` and `recommended` sections are computed without
+    merchandising input and never carry `sponsored`. Anything with `sponsored` set must be
+    rendered with a visible "Sponsored" label.
+
+    JSON property names use camelCase to match generated TypeScript from go-data-model.
+servers:
+  - url: http://localhost:8080
+    description: local api-engine
+paths:
+  /v1/home:
+    get:
+      operationId: getHomeFeed
+      summary: Build the home feed for an account
+      parameters:
+        - name: account_id
+          in: query
+          required: false
+          description: Account to personalize for; defaults to server DEFAULT_ACCOUNT_ID (acct_dev locally).
+          schema:
+            type: string
+            example: acct_dev
+      responses:
+        '200':
+          description: Home feed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeFeed'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+        '404':
+          description: Unknown account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+components:
+  schemas:
+    ErrorBody:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+    SponsoredMark:
+      type: object
+      description: Paid placement label. Present only on sponsored banners and the sponsored section.
+      required: [placementId, campaignId, advertiserName, label]
+      properties:
+        placementId:
+          type: string
+          description: Send with POST /v1/sponsored/events.
+        campaignId:
+          type: string
+        advertiserName:
+          type: string
+        label:
+          type: string
+          example: Sponsored
+    DealBadge:
+      type: object
+      description: A provider's public promotion on this restaurant (not paid placement).
+      required: [promotionId, channelId, label, fulfillmentMode]
+      properties:
+        promotionId:
+          type: string
+        channelId:
+          type: string
+          example: ch_skip
+        label:
+          type: string
+          example: 20% off pickup
+        fulfillmentMode:
+          type: string
+          description: Empty when the deal applies to every mode on the channel.
+    HomeBanner:
+      type: object
+      required: [id, kind, headline, body, imageURL, callToAction, restaurantId, sponsored, deal]
+      properties:
+        id:
+          type: string
+        kind:
+          type: string
+          enum: [sponsored, deal]
+        headline:
+          type: string
+        body:
+          type: string
+        imageURL:
+          type: string
+        callToAction:
+          type: string
+        restaurantId:
+          type: string
+          description: Storefront restaurant id; empty for channel-wide deals.
+        sponsored:
+          allOf:
+            - $ref: '#/components/schemas/SponsoredMark'
+          nullable: true
+        deal:
+          allOf:
+            - $ref: '#/components/schemas/DealBadge'
+          nullable: true
+    HomeFeedItem:
+      type: object
+      required: [restaurantId, reason, sponsored, deal]
+      properties:
+        restaurantId:
+          type: string
+        reason:
+          type: string
+          example: Because you like Pizza
+        sponsored:
+          allOf:
+            - $ref: '#/components/schemas/SponsoredMark'
+          nullable: true
+        deal:
+          allOf:
+            - $ref: '#/components/schemas/DealBadge'
+          nullable: true
+    HomeSection:
+      type: object
+      required: [kind, title, items]
+      properties:
+        kind:
+          type: string
+          enum: [sponsored, deals, popular, recommended]
+        title:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/HomeFeedItem'
+    HomeFeed:
+      type: object
+      required: [generatedAt, banners, sections]
+      properties:
+        generatedAt:
+          type: string
+          format: date-time
+        banners:
+          type: array
+          items:
+            $ref: '#/components/schemas/HomeBanner'
+        sections:
+          type: array
+          description: Ordered rails. `sponsored` and `deals` are omitted when empty.
+          items:
+            $ref: '#/components/schemas/HomeSection'

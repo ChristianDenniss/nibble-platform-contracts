@@ -137,6 +137,9 @@ components:
           type: string
         available:
           type: boolean
+        imageURL:
+          type: string
+          description: Absolute http(s) URL, or empty when the item has no image.
         price:
           $ref: '#/components/schemas/Money'
     CategoryWithItems:

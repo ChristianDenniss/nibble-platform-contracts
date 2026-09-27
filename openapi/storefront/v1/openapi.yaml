@@ -56,6 +56,96 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StorefrontCatalog'
+  /v1/cart:
+    put:
+      operationId: replaceCart
+      summary: Replace the comparison cart
+      description: Replaces the authenticated account's cart atomically after an add or provider swap.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Saved cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '400':
+          description: Invalid cart line
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+        '403':
+          description: Cart belongs to another account
+  /v1/cart/events:
+    post:
+      operationId: recordCartEvent
+      summary: Record a cart interaction
+      description: Records an anonymous cart suggestion, swap, or handoff event without blocking ordering.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [kind]
+              properties:
+                kind:
+                  type: string
+                  enum: [suggestion_add, provider_swap, handoff]
+                itemId:
+                  type: string
+                providerId:
+                  type: string
+                targetURL:
+                  type: string
+      responses:
+        '202':
+          description: Event accepted
+  /v1/menu-items/{itemId}/image:
+    put:
+      operationId: setMenuItemImage
+      summary: Point a menu item at an external image URL
+      description: |
+        Images are external links for now (provider CDN or hand-picked); no file is uploaded or hosted.
+        Send an empty imageURL to clear the image.
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: item_stack_classic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetMenuItemImageRequest'
+      responses:
+        '200':
+          description: Updated menu item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItem'
+        '400':
+          description: Malformed body or imageURL is not an absolute http(s) URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+        '404':
+          description: Unknown menu item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
 components:
   schemas:
     Money:
@@ -197,6 +287,17 @@ components:
           type: string
         section:
           type: string
+        imageURL:
+          type: string
+          description: Absolute http(s) URL, or empty when the item has no image.
+          example: https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=480&q=80
+    SetMenuItemImageRequest:
+      type: object
+      required: [imageURL]
+      properties:
+        imageURL:
+          type: string
+          description: Absolute http(s) URL; empty string clears the image.
     Offer:
       type: object
       properties:

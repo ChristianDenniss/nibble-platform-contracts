@@ -469,8 +469,10 @@ type SourceItem struct {
 	Name             string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	Description      string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
 	Available        bool                   `protobuf:"varint,6,opt,name=available,proto3" json:"available,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Absolute http(s) URL; empty keeps whatever image the item already has.
+	ImageUrl      string `protobuf:"bytes,7,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SourceItem) Reset() {
@@ -543,6 +545,13 @@ func (x *SourceItem) GetAvailable() bool {
 		return x.Available
 	}
 	return false
+}
+
+func (x *SourceItem) GetImageUrl() string {
+	if x != nil {
+		return x.ImageUrl
+	}
+	return ""
 }
 
 type SourceSnapshot struct {
@@ -3535,7 +3544,7 @@ const file_ingest_v2_ingest_proto_rawDesc = "" +
 	"\x14external_category_id\x18\x03 \x01(\tR\x12externalCategoryId\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
-	"sort_order\x18\x05 \x01(\x05R\tsortOrder\"\xc8\x01\n" +
+	"sort_order\x18\x05 \x01(\x05R\tsortOrder\"\xe5\x01\n" +
 	"\n" +
 	"SourceItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12,\n" +
@@ -3543,7 +3552,8 @@ const file_ingest_v2_ingest_proto_rawDesc = "" +
 	"\x10external_item_id\x18\x03 \x01(\tR\x0eexternalItemId\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x1c\n" +
-	"\tavailable\x18\x06 \x01(\bR\tavailable\"\xf9\x01\n" +
+	"\tavailable\x18\x06 \x01(\bR\tavailable\x12\x1b\n" +
+	"\timage_url\x18\a \x01(\tR\bimageUrl\"\xf9\x01\n" +
 	"\x0eSourceSnapshot\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\"\n" +
 	"\ringest_run_id\x18\x02 \x01(\tR\vingestRunId\x12*\n" +

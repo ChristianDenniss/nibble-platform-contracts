@@ -15,10 +15,20 @@ paths:
     $ref: '../../storefront/v1/openapi.yaml#/paths/~1storefront'
   /v1/storefront:
     $ref: '../../storefront/v1/openapi.yaml#/paths/~1v1~1storefront'
+  /v1/menu-items/{itemId}/image:
+    $ref: '../../storefront/v1/openapi.yaml#/paths/~1v1~1menu-items~1{itemId}~1image'
+  /v1/home:
+    $ref: '../../home/v1/openapi.yaml#/paths/~1v1~1home'
+  /v1/sponsored/events:
+    $ref: '../../sponsored/v1/openapi.yaml#/paths/~1v1~1sponsored~1events'
   /v1/compare:
     $ref: '../../compare/v1/openapi.yaml#/paths/~1v1~1compare'
   /v1/compare/sessions/{id}:
     $ref: '../../compare/v1/openapi.yaml#/paths/~1v1~1compare~1sessions~1{id}'
+    /v1/serviceability:
+      $ref: '../../serviceability/v1/openapi.yaml#/paths/~1v1~1serviceability'
+    /v1/serviceability/restaurants:
+      $ref: '../../serviceability/v1/openapi.yaml#/paths/~1v1~1serviceability~1restaurants'
   /v1/channels/{channelId}/source-stores:
     $ref: '../../source/v1/openapi.yaml#/paths/~1v1~1channels~1{channelId}~1source-stores'
   /v1/source-stores/{storeId}/menu:

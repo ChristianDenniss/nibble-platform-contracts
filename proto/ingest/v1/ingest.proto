@@ -30,6 +30,8 @@ message MenuItem {
   string id = 1;
   string restaurant_id = 2;
   string name = 3;
+  // Absolute http(s) URL; empty keeps whatever image the item already has.
+  string image_url = 4;
 }
 
 message Offer {
