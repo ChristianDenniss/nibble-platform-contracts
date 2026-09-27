@@ -57,6 +57,8 @@ message SourceItem {
   string name = 4;
   string description = 5;
   bool available = 6;
+  // Absolute http(s) URL; empty keeps whatever image the item already has.
+  string image_url = 7;
 }
 
 message SourceSnapshot {
@@ -263,6 +265,72 @@ message RecordDishResponse {
   string id = 1;
 }
 
+message Market {
+  string id = 1;
+  string slug = 2;
+  string name = 3;
+  string country = 4;
+  string region = 5;
+  string currency = 6;
+  string timezone = 7;
+  string status = 8;
+  string geohash_prefixes = 9;
+}
+
+message ProbeDropoff {
+  string id = 1;
+  string market_id = 2;
+  string label = 3;
+  Location location = 4;
+  string geohash = 5;
+}
+
+message ChannelMarketCoverage {
+  string id = 1;
+  string channel_id = 2;
+  string market_id = 3;
+  string status = 4;
+  int32 store_count = 5;
+  string ingest_run_id = 6;
+  string note = 7;
+  int64 last_observed_at_unix_ms = 8;
+}
+
+message MembershipProduct {
+  string id = 1;
+  string channel_id = 2;
+  string name = 3;
+  string slug = 4;
+}
+
+message RecordMarketRequest {
+  Market market = 1;
+}
+message RecordMarketResponse {
+  string id = 1;
+}
+
+message RecordProbeDropoffRequest {
+  ProbeDropoff dropoff = 1;
+}
+message RecordProbeDropoffResponse {
+  string id = 1;
+}
+
+message RecordChannelMarketCoverageRequest {
+  ChannelMarketCoverage coverage = 1;
+}
+message RecordChannelMarketCoverageResponse {
+  string id = 1;
+}
+
+message RecordMembershipProductRequest {
+  MembershipProduct product = 1;
+}
+message RecordMembershipProductResponse {
+  string id = 1;
+}
+
 service IngestService {
   rpc RecordChannel(RecordChannelRequest) returns (RecordChannelResponse);
   rpc RecordIngestRun(RecordIngestRunRequest) returns (RecordIngestRunResponse);
@@ -279,4 +347,8 @@ service IngestService {
   rpc RecordItemMatch(RecordItemMatchRequest) returns (RecordItemMatchResponse);
   rpc RecordBrand(RecordBrandRequest) returns (RecordBrandResponse);
   rpc RecordDish(RecordDishRequest) returns (RecordDishResponse);
+  rpc RecordMarket(RecordMarketRequest) returns (RecordMarketResponse);
+  rpc RecordProbeDropoff(RecordProbeDropoffRequest) returns (RecordProbeDropoffResponse);
+  rpc RecordChannelMarketCoverage(RecordChannelMarketCoverageRequest) returns (RecordChannelMarketCoverageResponse);
+  rpc RecordMembershipProduct(RecordMembershipProductRequest) returns (RecordMembershipProductResponse);
 }

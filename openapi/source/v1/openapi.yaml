@@ -1,0 +1,164 @@
+openapi: 3.0.3
+info:
+  title: Nibble Source Catalog API
+  version: 1.0.0
+  description: Phase 1 single-channel menu browse (source plane).
+paths:
+  /v1/channels/{channelId}/source-stores:
+    get:
+      operationId: listSourceStoresByChannel
+      summary: List source stores for a channel
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: ch_store
+      responses:
+        '200':
+          description: Stores on this channel
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stores:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SourceStore'
+  /v1/source-stores/{storeId}/menu:
+    get:
+      operationId: getSourceStoreMenu
+      summary: Load menu for one source store and fulfillment path
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fulfillment_mode
+          in: query
+          required: true
+          schema:
+            type: string
+            example: pickup
+        - name: delivery_executor
+          in: query
+          required: false
+          schema:
+            type: string
+            example: third_party
+      responses:
+        '200':
+          description: Menu with categories, items, and latest observed prices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuBrowse'
+        '400':
+          description: Missing parameters
+        '404':
+          description: Store or menu path not found
+components:
+  schemas:
+    Money:
+      type: object
+      properties:
+        amountCents:
+          type: integer
+          format: int64
+        currency:
+          type: string
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        address:
+          type: string
+    SourceStore:
+      type: object
+      properties:
+        id:
+          type: string
+        channelId:
+          type: string
+        externalStoreId:
+          type: string
+        name:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        phone:
+          type: string
+    SourceMenu:
+      type: object
+      properties:
+        id:
+          type: string
+        sourceStoreId:
+          type: string
+        fulfillmentMode:
+          type: string
+        deliveryExecutor:
+          type: string
+        externalMenuId:
+          type: string
+    SourceCategory:
+      type: object
+      properties:
+        id:
+          type: string
+        sourceMenuId:
+          type: string
+        externalCategoryId:
+          type: string
+        name:
+          type: string
+        sortOrder:
+          type: integer
+    SourceMenuItem:
+      type: object
+      properties:
+        id:
+          type: string
+        sourceCategoryId:
+          type: string
+        externalItemId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        available:
+          type: boolean
+        imageURL:
+          type: string
+          description: Absolute http(s) URL, or empty when the item has no image.
+        price:
+          $ref: '#/components/schemas/Money'
+    CategoryWithItems:
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/SourceCategory'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceMenuItem'
+    MenuBrowse:
+      type: object
+      properties:
+        store:
+          $ref: '#/components/schemas/SourceStore'
+        menu:
+          $ref: '#/components/schemas/SourceMenu'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryWithItems'

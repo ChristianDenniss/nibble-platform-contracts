@@ -1,0 +1,120 @@
+openapi: 3.0.3
+info:
+  title: Nibble Serviceability API
+  version: 1.0.0
+  description: Provider and source-store coverage checks for a selected dropoff.
+servers:
+  - url: http://localhost:8080
+paths:
+  /v1/serviceability:
+    get:
+      operationId: getServiceability
+      summary: Check whether a source-store ordering path serves a dropoff
+      parameters:
+        - name: source_store_id
+          in: query
+          required: true
+          schema: { type: string }
+        - name: fulfillment_mode
+          in: query
+          required: true
+          schema: { type: string, example: delivery }
+        - name: delivery_executor
+          in: query
+          required: false
+          schema: { type: string, example: third_party }
+        - name: dropoff_geohash
+          in: query
+          required: false
+          schema: { type: string, example: f80t7 }
+        - name: latitude
+          in: query
+          required: false
+          schema: { type: number, format: double, example: 45.9458 }
+        - name: longitude
+          in: query
+          required: false
+          schema: { type: number, format: double, example: -66.6414 }
+      responses:
+        '200':
+          description: Coverage decision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceabilityDecision'
+        '400':
+          description: Missing or invalid path identity or coordinates
+        '500':
+          description: Serviceability lookup failed
+  /v1/serviceability/restaurants:
+    get:
+      operationId: getRestaurantServiceability
+      summary: Check all mapped provider paths for restaurants at one dropoff
+      parameters:
+        - name: restaurant_ids
+          in: query
+          required: true
+          description: Comma-separated legacy restaurant IDs.
+          schema: { type: string, example: rest_1,rest_2 }
+        - name: latitude
+          in: query
+          required: true
+          schema: { type: number, format: double }
+        - name: longitude
+          in: query
+          required: true
+          schema: { type: number, format: double }
+        - name: fulfillment_mode
+          in: query
+          required: false
+          schema: { type: string, default: delivery }
+        - name: delivery_executor
+          in: query
+          required: false
+          schema: { type: string }
+      responses:
+        '200':
+          description: Provider path coverage for each restaurant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestaurantServiceabilityResponse'
+        '400':
+          description: Invalid restaurant IDs or coordinates
+        '501':
+          description: Legacy-to-source-store mapping is not configured
+components:
+  schemas:
+    ServiceabilityDecision:
+      type: object
+      required: [sourceStoreId, fulfillmentMode, deliverable, status, reason]
+      properties:
+        sourceStoreId: { type: string }
+        fulfillmentMode: { type: string }
+        deliveryExecutor: { type: string }
+        dropoffGeohash: { type: string }
+        deliverable: { type: boolean }
+        status: { type: string, enum: [covered, unavailable, unknown] }
+        reason: { type: string, example: outside_service_area }
+    RestaurantServiceabilityResponse:
+      type: object
+      required: [restaurants]
+      properties:
+        restaurants:
+          type: array
+          items:
+            type: object
+            required: [restaurantId, paths]
+            properties:
+              restaurantId: { type: string }
+              paths:
+                type: array
+                items:
+                  type: object
+                  required: [providerId, sourceStoreId, deliverable, status, reason]
+                  properties:
+                    providerId: { type: string }
+                    sourceStoreId: { type: string }
+                    deliverable: { type: boolean }
+                    status: { type: string, enum: [covered, unavailable, unknown] }
+                    reason: { type: string }

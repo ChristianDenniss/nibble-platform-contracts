@@ -1,0 +1,66 @@
+openapi: 3.0.3
+info:
+  title: Nibble Sponsored Events API
+  version: 1.0.0
+  description: |
+    Impression and click logging for sponsored placements (plane 9). Events are append-only
+    and are the billing source for campaigns. The web app sends one impression per placement
+    per session when it scrolls into view, and a click when the user follows it.
+servers:
+  - url: http://localhost:8080
+    description: local api-engine
+paths:
+  /v1/sponsored/events:
+    post:
+      operationId: recordSponsoredEvent
+      summary: Record a sponsored impression or click
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SponsoredEventRequest'
+      responses:
+        '202':
+          description: Event recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SponsoredEventResponse'
+        '400':
+          description: Missing placement or invalid kind
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+components:
+  schemas:
+    ErrorBody:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+    SponsoredEventRequest:
+      type: object
+      required: [placement_id, kind]
+      properties:
+        placement_id:
+          type: string
+          example: spl_koi_rail
+        kind:
+          type: string
+          enum: [impression, click]
+        surface:
+          type: string
+          description: Page that rendered the placement.
+          example: home
+    SponsoredEventResponse:
+      type: object
+      required: [id, occurred_at]
+      properties:
+        id:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
